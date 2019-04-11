@@ -27,7 +27,7 @@ public class ConnectorUtil {
             "VALUES (?,?,?,?)";
 
     public void getConnection() throws SQLException {
-        createProperties();
+        properties = new Properties();
         try(InputStream in = new FileInputStream("/database.properties")){
             properties.load(in);
         } catch (IOException e ) {
@@ -77,16 +77,15 @@ public class ConnectorUtil {
         }
     }
 
-    public void createNewProject(String name, Integer developersNumber,
-                                 String customer, Integer price, Integer cost, String creationDate) {
+    public void createNewProject(ProjectTable projectTable) {
         try {
             PreparedStatement firstPreparedStatement = connection.prepareStatement(project);
-            firstPreparedStatement.setString(1, name);
-            firstPreparedStatement.setInt(2, developersNumber);
-            firstPreparedStatement.setString(3, customer);
-            firstPreparedStatement.setInt(4, price);
-            firstPreparedStatement.setInt(5, cost);
-            firstPreparedStatement.setString(6, creationDate);
+            firstPreparedStatement.setString(1, projectTable.getName());
+            firstPreparedStatement.setInt(2, projectTable.getDevelopersNumber());
+            firstPreparedStatement.setString(3, projectTable.getCustomer());
+            firstPreparedStatement.setInt(4, projectTable.getPrice());
+            firstPreparedStatement.setInt(5, projectTable.getCost());
+            firstPreparedStatement.setString(6, projectTable.getCreationDate());
             firstPreparedStatement.execute();
         } catch (SQLException e) {
             LOGGER.error("Error" + e);
@@ -117,12 +116,5 @@ public class ConnectorUtil {
         } catch (SQLException e) {
             LOGGER.error("Error" + e);
         }
-    }
-
-    private void createProperties() {
-        properties = new Properties();
-        properties.setProperty("url","jdbc:mysql://localhost:3306/hw13?serverTimezone=Europe/Kiev&useSSL=false");
-        properties.setProperty("username", "root");
-        properties.setProperty("password", "root");
     }
 }
