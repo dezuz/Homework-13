@@ -1,8 +1,11 @@
 package com.mateacademy.sql;
 
+import org.apache.log4j.Logger;
+
 import java.sql.SQLException;
 
 public class SqlTest {
+    private static final Logger LOGGER = Logger.getLogger(SqlTest.class);
     private static String skillsInsert = "INSERT INTO skills (area, skills_level) " +
             "VALUES (\"Java\", \"Junior\")";
     private static String updateSkills = "UPDATE skills SET area = \"C++\" WHERE id = 6";
@@ -30,13 +33,8 @@ public class SqlTest {
     private static String selectProjects = "SELECT creation_date,name,developers_number\n" +
             "FROM projects;";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         ConnectorUtil connectorUtil = new ConnectorUtil();
-        try {
-            connectorUtil.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         connectorUtil.createMethod(skillsInsert);
         connectorUtil.updateOrDeleteMethod(updateSkills);
         connectorUtil.updateOrDeleteMethod(deleteSkills);
