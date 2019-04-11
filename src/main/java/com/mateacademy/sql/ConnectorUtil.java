@@ -2,21 +2,23 @@ package com.mateacademy.sql;
 
 import org.apache.log4j.Logger;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.util.Properties;
 
 public class ConnectorUtil {
-    private static final Logger logger = Logger.getLogger(ConnectorUtil.class);
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
-    private static final String URL = "jdbc:mysql://localhost:3306/hw13?serverTimezone=Europe/Kiev&useSSL=false";
+    private static final Logger LOGGER = Logger.getLogger(ConnectorUtil.class);
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet;
+    private Properties properties;
     private String project = "INSERT INTO projects (name, developers_number, customer, price, cost, creation_date) " +
             "VALUES (?,?,?,?,?,?)";
     private String customer = "INSERT INTO customers (name, company, budget) " +
@@ -24,12 +26,18 @@ public class ConnectorUtil {
     private String developer = "INSERT INTO developers (name, age, sex, salary) " +
             "VALUES (?,?,?,?)";
 
-    public void getConnection() {
-        try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            logger.error("Error" + e);
+    public void getConnection() throws SQLException {
+        createProperties();
+        try(InputStream in = new FileInputStream("/database.properties")){
+            properties.load(in);
+        } catch (IOException e ) {
+            LOGGER.error("Error" + e);
         }
+        String url = properties.getProperty("url");
+        String username = properties.getProperty("username");
+        String password = properties.getProperty("password");
+
+        connection = DriverManager.getConnection(url, username, password);
     }
 
     public void createMethod(String createRequest) {
@@ -38,7 +46,7 @@ public class ConnectorUtil {
             statement.execute(createRequest);
             statement.close();
         } catch (SQLException e) {
-            logger.error("Error" + e);
+            LOGGER.error("Error" + e);
         }
     }
 
@@ -55,7 +63,7 @@ public class ConnectorUtil {
             statement.close();
             resultSet.close();
         } catch (SQLException e) {
-            logger.error("Error" + e);
+            LOGGER.error("Error" + e);
         }
     }
 
@@ -65,7 +73,7 @@ public class ConnectorUtil {
             statement.executeUpdate(createRequest);
             statement.close();
         } catch (SQLException e) {
-            logger.error("Error" + e);
+            LOGGER.error("Error" + e);
         }
     }
 
@@ -81,7 +89,7 @@ public class ConnectorUtil {
             firstPreparedStatement.setString(6, creationDate);
             firstPreparedStatement.execute();
         } catch (SQLException e) {
-            logger.error("Error" + e);
+            LOGGER.error("Error" + e);
         }
 
     }
@@ -95,7 +103,7 @@ public class ConnectorUtil {
             secondPreparedStatement.setInt(4, salary);
             secondPreparedStatement.execute();
         } catch (SQLException e) {
-            logger.error("Error" + e);
+            LOGGER.error("Error" + e);
         }
     }
 
@@ -107,53 +115,14 @@ public class ConnectorUtil {
             thirdPreparedStatement.setInt(3, budget);
             thirdPreparedStatement.execute();
         } catch (SQLException e) {
-            logger.error("Error" + e);
+            LOGGER.error("Error" + e);
         }
     }
 
-
-    public static void main(String[] args) {
-        ConnectorUtil connectorUtil = new ConnectorUtil();
-        connectorUtil.getConnection();
-        connectorUtil.createMethod("INSERT INTO skills (area, skills_level) " +
-                "VALUES (\"Java\", \"Junior\")");
-        connectorUtil.updateOrDeleteMethod("UPDATE skills SET area = \"C++\" WHERE id = 6");
-        connectorUtil.updateOrDeleteMethod("DELETE FROM skills WHERE id = 6");
-        System.out.println("Salaries of all developers on one project:\n" +
-                "------------------------------------------");
-        connectorUtil.readMethod("SELECT SUM(developers.salary)\n" +
-                "FROM developers\n" +
-                "INNER JOIN developer_to_projects ON\n" +
-                "developers.id = developer_to_projects.id_developers\n" +
-                "WHERE id_project = 4;", 1);
-        System.out.println("Developers name on project:\n" +
-                "------------------------------------------");
-        connectorUtil.readMethod("SELECT developers.name\n" +
-                "FROM developers\n" +
-                "INNER JOIN developer_to_projects ON\n" +
-                "developers.id = developer_to_projects.id_developers\n" +
-                "WHERE id_project = 1;", 1);
-        System.out.println("All Java developers:\n" +
-                "------------------------------------------");
-        connectorUtil.readMethod("SELECT developers.name\n" +
-                "FROM developers\n" +
-                "INNER JOIN developer_to_skill ON\n" +
-                "developers.id = developer_to_skill.id_developer\n" +
-                "WHERE id_skill = 2;", 1);
-        System.out.println("All middle developers:\n" +
-                "------------------------------------------");
-        connectorUtil.readMethod("SELECT developers.name\n" +
-                "FROM developers\n" +
-                "INNER JOIN skills ON\n" +
-                "developers.id = skills.id\n" +
-                "WHERE skills.skills_level = \"middle\";", 1);
-        System.out.println("All projects (creation date : project name : developer numbers):\n" +
-                "------------------------------------------");
-        connectorUtil.readMethod("SELECT creation_date,name,developers_number\n" +
-                "FROM projects;", 3);
-        connectorUtil.createNewProject("Project1", 4, "Project company", 5000,
-                1_000_000, "09.04.2019");
-        connectorUtil.createNewDeveloper("Andrew", 19, "male", 550);
-        connectorUtil.createNewCustomer("Max", "NAU company", 40_000);
+    private void createProperties() {
+        properties = new Properties();
+        properties.setProperty("url","jdbc:mysql://localhost:3306/hw13?serverTimezone=Europe/Kiev&useSSL=false");
+        properties.setProperty("username", "root");
+        properties.setProperty("password", "root");
     }
 }
