@@ -1,5 +1,5 @@
 .idea
 out/
 *.iml
-.log
+log_file.log
 target/
