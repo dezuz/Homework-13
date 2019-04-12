@@ -1,0 +1,16 @@
+2019-04-11 16:33:52 ERROR ConnectorUtil:34 - Errorjava.io.FileNotFoundException: \database.properties (Не удается найти указанный файл)
+2019-04-11 16:38:36 ERROR ConnectorUtil:34 - Errorjava.io.FileNotFoundException: \database.properties (Не удается найти указанный файл)
+2019-04-11 16:38:40 ERROR ConnectorUtil:34 - Errorjava.io.FileNotFoundException: \database.properties (Не удается найти указанный файл)
+2019-04-11 16:41:34 ERROR ConnectorUtil:34 - Errorjava.io.FileNotFoundException: \database.properties (Не удается найти указанный файл)
+2019-04-12 02:24:17 ERROR ConnectorUtil:35 - Errorjava.io.FileNotFoundException: \database.properties (Не удается найти указанный файл)
+2019-04-12 02:24:17 ERROR ConnectorUtil:46 - Errorjava.sql.SQLException: The url cannot be null
+2019-04-12 02:24:30 ERROR ConnectorUtil:35 - Errorjava.io.FileNotFoundException: \database.properties (Не удается найти указанный файл)
+2019-04-12 02:24:31 ERROR ConnectorUtil:46 - Errorjava.sql.SQLException: The url cannot be null
+2019-04-12 02:25:38 ERROR ConnectorUtil:35 - Errorjava.io.FileNotFoundException: \database.properties (Не удается найти указанный файл)
+2019-04-12 02:25:38 ERROR ConnectorUtil:46 - Errorjava.sql.SQLException: The url cannot be null
+2019-04-12 02:25:45 ERROR ConnectorUtil:35 - Errorjava.io.FileNotFoundException: \\database.properties (Указан недопустимый путь)
+2019-04-12 02:25:45 ERROR ConnectorUtil:46 - Errorjava.sql.SQLException: The url cannot be null
+2019-04-12 02:25:49 ERROR ConnectorUtil:35 - Errorjava.io.FileNotFoundException: \database.properties (Не удается найти указанный файл)
+2019-04-12 02:25:49 ERROR ConnectorUtil:46 - Errorjava.sql.SQLException: The url cannot be null
+2019-04-12 02:25:57 ERROR ConnectorUtil:35 - Errorjava.io.FileNotFoundException: database.properties (Не удается найти указанный файл)
+2019-04-12 02:25:57 ERROR ConnectorUtil:46 - Errorjava.sql.SQLException: The url cannot be null
